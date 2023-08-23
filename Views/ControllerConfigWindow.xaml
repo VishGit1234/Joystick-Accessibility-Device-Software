@@ -1,0 +1,77 @@
+﻿<Window x:Class="Controller.Views.ControllerConfigWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Controller.Views"
+        mc:Ignorable="d"
+        Title="ControllerConfigWindow" Height="450" Width="700">
+    <Window.Resources>
+        <Style x:Key="ModernDataGridStyle" TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="GridLinesVisibility" Value="None" />
+        </Style>
+    </Window.Resources>
+
+
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Ctrl" Key="S" Command="{Binding SaveConfigCommand}" CommandParameter="{Binding Throttle}"/>
+    </Window.InputBindings>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <!--Add margin of 20px on the left as a column-->
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+            <!--Add margin of 20px on the right as a column-->
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <!--Add margin of 20px on the bottom as a row-->
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="0" Grid.Column="1">
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="File">
+                    <MenuItem Header="Load" Command="{Binding LoadConfigCommand}" CommandParameter="{Binding Throttle}"/>
+                    <MenuItem Header="Save" Command="{Binding SaveConfigCommand}" CommandParameter="{Binding Throttle}"/>
+                </MenuItem>
+            </Menu>
+            <DataGrid Style="{StaticResource ModernDataGridStyle}" x:Name="dgvFieldsMapping" Grid.Row="0" Grid.Column="1" DockPanel.Dock="Bottom" ItemsSource="{Binding ControllerInputs}" HorizontalAlignment="Stretch" Width="Auto" AutoGenerateColumns="False">
+                <DataGrid.Resources>
+                    <Style x:Key="dgvComboBox_Loaded" TargetType="ComboBox">
+                        <EventSetter Event="Loaded" Handler="dgvCombobox_Loaded" />
+                    </Style>
+                </DataGrid.Resources>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Hardware ID" Binding="{Binding HardwareID}"/>
+                    <DataGridTemplateColumn Header="Type">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox ItemsSource="{Binding InputTypes, Mode=OneTime}" SelectedItem="{Binding InputType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=TwoWay}"/>
+                    <DataGridTextColumn Header="Raw Output" Binding="{Binding Value, Mode=OneWay}"/>
+                    <DataGridTemplateColumn Header="Audio Type">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox ItemsSource="{Binding AudioTypes, Mode=OneWay}" SelectedItem="{Binding AudioType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Audio">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="{Binding AudioButtonName, Mode=OneWay}" 
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.AudioPlayConfigCommand}" 
+                                        CommandParameter="{Binding}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+    </Grid>
+</Window>

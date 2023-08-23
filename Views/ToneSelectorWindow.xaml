@@ -1,0 +1,26 @@
+﻿<Window x:Class="Controller.Views.ToneSelectorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Controller.Views"
+        mc:Ignorable="d"
+        Title="ToneSelectorWindow" Height="100" Width="300" 
+        MinHeight="100" MaxHeight="100" MinWidth="200" MaxWidth="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <DockPanel VerticalAlignment="Center" Grid.Column="1" Grid.Row="1">
+            <Button Content="{Binding ElementName=slValue, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" Width="40" Click="onPreviewClick"/>
+            <Slider Width="200" Minimum="500" Maximum="1000" TickPlacement="BottomRight" TickFrequency="50" IsSnapToTickEnabled="True" Name="slValue" ValueChanged="slValue_ValueChanged"/>
+        </DockPanel>
+    </Grid>
+</Window>
